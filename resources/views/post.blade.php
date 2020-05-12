@@ -58,7 +58,15 @@
                 </div>
             </div>
 
-            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">.
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        @foreach ($errors->all() as $error)
+                            {{ $error }} <br>
+                        @endforeach
+                    </div>
+                @endif
+
                 <form method="post" action="{{ route('comment.add', $post->id) }}">
                     @csrf
                     <div class="form-group">

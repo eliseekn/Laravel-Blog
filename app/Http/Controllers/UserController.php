@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -14,24 +14,23 @@ class UserController extends Controller
             return redirect()->route('dashboard');
         }
 
-        return view(
-            'login',
-            array(
-                'page_title' => 'The Mount Everest Blog - Login',
-				'page_description' => 'Login page'
-            )
-        );
+        return view('login', [
+            'page_title' => 'The Mount Everest Blog - Login',
+            'page_description' => 'Login page'
+        ]);
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $loginRequest)
     {
-        $credentials = $request->only('email', 'password');
+        $loginRequest->validated();
+
+        $credentials = $loginRequest->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
             return redirect()->route('dashboard');
         }
 
-        return back()->with('failed','Invalid email address and/or password');
+        return back()->with('failed', 'Incorrect email address and/or password');
     }
 
     public function logout()

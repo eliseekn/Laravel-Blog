@@ -17,10 +17,18 @@
         <div class="container" style="width: 400px">
             <h1 class="display-4 py-3 text-center">Login</h1>
 
-            @if (Session::has('failed'))
-                <div class="alert alert-danger" role="alert">
-                    {{ Session::get('failed') }}
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                     @foreach ($errors->all() as $error)
+                        {{ $error }} <br>
+                    @endforeach
                 </div>
+            @else
+                @if (Session::has('failed'))
+                    <div class="alert alert-danger">
+                        {{ Session::get('failed') }}
+                    </div>
+                @endif
             @endif
 
             <div class="card shadow p-5">

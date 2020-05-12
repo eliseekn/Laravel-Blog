@@ -7,7 +7,6 @@ use App\Comments;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Symfony\Component\HttpFoundation\File\File;
 
 class PostController extends Controller
 {
@@ -42,7 +41,7 @@ class PostController extends Controller
         return back();
     }
 
-    public function edit(Request $request, $id)
+    public function edit(Request $request, int $id)
     {
         $post = Posts::find($id);
         $post->title = $request->input('title');
@@ -51,21 +50,24 @@ class PostController extends Controller
         $post->save();
     }
 
-    public function replaceImage(Request $request, $id)
+    public function replaceImage(Request $request, int $id)
     {
+        $post = Posts::find($id);
+        unlink(public_path('assets/img/posts/' . $post->image));
+    
         $image = $request->file('image');
-        unlink(public_path('assets/img/posts/' . $image->getClientOriginalName()));
-
         $image->move('assets/img/posts', $image->getClientOriginalName());
         
-        $post = Posts::find($id);
         $post->image = $image->getClientOriginalName();
         $post->save();
     }
 
-    public function delete($id)
+    public function delete(int $id)
     {
-        Posts::where('id', $id)->delete();
+        $post = Posts::find($id);
+        unlink(public_path('assets/img/posts/' . $post->image));
+        $post->delete();
+
         return back();
     }
 }

@@ -2,27 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Posts;
 use App\Comments;
 use App\Http\Controllers\Controller;
-use App\Posts;
-use Illuminate\Http\Request;
+use App\Http\Requests\CommentRequest;
 
 class CommentController extends Controller
 {
-    public function add(Request $request, $postId)
+    public function add(CommentRequest $commentRequest, int $postId)
     {
+        $commentRequest->validated();
+
         $comment = new Comments;
         $comment->post_id = $postId;
-        $comment->author = $request->input('author');
-        $comment->content = $request->input('content');
+        $comment->author = $commentRequest->input('author');
+        $comment->content = $commentRequest->input('content');
         $comment->save();
 
         return redirect()->route('post', array('slug' => Posts::where('id', $postId)->first()->slug));
     }
 
-    public function delete($id)
+    public function delete(int $id)
     {
         Comments::where('id', $id)->delete();
-        return redirect()->route('dashboard.comments');
+        return back();
     }
 }
