@@ -19,7 +19,9 @@ class CommentController extends Controller
         $comment->content = $commentRequest->input('content');
         $comment->save();
 
-        return redirect()->route('post', array('slug' => Posts::where('id', $postId)->first()->slug));
+        return redirect()->route('post', [
+            'slug' => Posts::where('id', $postId)->first()->slug
+        ]);
     }
 
     public function delete(int $id)

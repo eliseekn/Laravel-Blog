@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Posts;
 use App\Comments;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class PostController extends Controller
 {
@@ -14,16 +14,13 @@ class PostController extends Controller
     {
         $post = Posts::where('slug', $slug)->first();
 
-        return view(
-            'post',
-            array(
-                'page_title' => 'The Mount Everest Blog | ' . $post->title,
-                'header_title' => 'The Mount Everest Blog',
-                'page_description' => 'Blog about mountaineering',
-                'post' => $post,
-                'comments' => Comments::where('post_id', $post->id)->get()
-            )
-        );
+        return view('post',[
+            'page_title' => 'The Mount Everest Blog | ' . $post->title,
+            'header_title' => 'The Mount Everest Blog',
+            'page_description' => 'Blog about mountaineering',
+            'post' => $post,
+            'comments' => Comments::where('post_id', $post->id)->get()
+        ]);
     }
 
     public function add(Request $request)

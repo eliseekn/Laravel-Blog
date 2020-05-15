@@ -9,13 +9,10 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return view(
-            'home',
-            array(
-                'page_title' => 'The Mount Everest Blog',
-                'page_description' => 'Blog about mountaineering',
-                'posts' => Posts::paginate(5)
-            )
-        );
+        return view('home', [
+            'page_title' => 'The Mount Everest Blog',
+            'page_description' => 'Blog about mountaineering',
+            'posts' => Posts::paginate(5)
+        ]);
     }
 }
